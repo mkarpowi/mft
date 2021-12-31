@@ -1,2 +1,3 @@
-# mft
-Meta-factorization
+# Meta-factorization
+
+We introduce meta-factorization, a theory that describes matrix decompositions as solutions of linear matrix equations: the projector and the reconstruction equation. Meta-factorization reconstructs known factorizations, reveals their internal structures, and allows for introducing modifications, as illustrated with SVD, QR, and UTV factorizations. The prospect of meta-factorization also provides insights into computational aspects of generalized matrix inverses and randomized linear algebra algorithms. The relations between the Moore-Penrose pseudoinverse, generalized Nystroem method, and the CUR decomposition are revealed here as an illustration. Finally, meta-factorization offers hints on the structure of new factorizations and provides the potential of creating them.
