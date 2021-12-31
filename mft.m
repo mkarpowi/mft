@@ -3,7 +3,7 @@
 
 clear all
 
-% Select a test matrix
+% Select test matrix
 N       = 5e2;
 A       = gallery('randsvd',[3*N,N],1e4);
 A       = gallery('cycol',[N,3*N],ceil(N/5));
