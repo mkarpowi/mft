@@ -231,7 +231,8 @@ k       = ceil(k0*1)
 F       = Qc(:,1:k);        B = randn(m,k);
 H       = (Rc(1:k,:)*Pc')'; D = H;
 
-% Periodic matix
+
+% Periodic matrix
 Z       = diag(roots([1 zeros(1,k-1) -1])); 
 
 % Factorization period
@@ -251,6 +252,42 @@ axis equal off
 drawnow
 
 err     = norm(Ar-A,'fro')/norm(A,'fro')
+
+
+%% Reconstruction error of periodic factorization
+
+% Select compression level
+k       = ceil(k0*.088)
+
+F       = Qc(:,1:k);        B = F;
+H       = Qr(:,1:k);        D = H;
+
+% Periodic mixing matrix
+lambda  = roots([1 zeros(1,k-1) -1]);
+Z       = diag(lambda);
+[QY,RY] = qr(B'*F,0);           [QX,RX] = qr(H'*D,0);
+Y       = (Z*(RY\(QY'*B')))';   X       = ((D/RX)*QX')*Z;
+G0      = Y'*A*X;
+
+% Factorization period
+p0      = k;
+err     = zeros(p0,1);
+for p = 1:p0
+    Zp      = diag(lambda.^(p-1));
+    G       = (Zp*G0*Zp);
+    Ar      = F*G*H';
+    err(p)  = norm(Ar-A,'fro')/norm(A,'fro');
+    
+    subplot(121)
+    imagesc(real(Ar))
+    axis equal off
+    drawnow
+    
+end
+subplot(122)
+stairs(1:p,err)
+grid on
+
 
 
 
