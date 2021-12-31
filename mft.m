@@ -202,9 +202,10 @@ In      = eye(n);       Im      = eye(m);
 I       = randperm(m,k);J       = randperm(n,k);
 Q       = In(:,J);      P       = Im(:,I);
 F       = A*Q;          H       = A'*P;
-B       = P;            D       = Q;                % Nystrom-like method
-B       = F;            D       = H;                % CUR (with naive sampling)
-                                                    % Warning:
+B       = P;            D       = Q;                % Nystrom method (naive sampling)
+B       = F;            D       = H;                % CUR (naive sampling)
+
+warning = [rank(B'*F), rank(H'*D), k]           	% Warning:
 [QY,RY] = qr(B'*F,0);   [QX,RX] = qr(H'*D,0);       % If rank(B'*F) = rank(H'*D) = k,
 Y       = (RY\(QY'*B'))';   X   = (D/RX)*QX';       %  calculate Y and X.
 Y       = (pinv(B'*F)*B')'; X   = D*pinv(H'*D);     % Otherwise, consider using pinv()
