@@ -226,7 +226,7 @@ err     = norm(Ar-A,'fro')/norm(A,'fro')
 %% Side note, periodic factorizations (naive implementation)
 
 % Select compression level
-k       = ceil(k0*0.1)
+k       = ceil(k0*1)
 
 F       = Qc(:,1:k);        B = randn(m,k);
 H       = (Rc(1:k,:)*Pc')'; D = H;
@@ -236,7 +236,7 @@ Z       = diag(roots([1 zeros(1,k-1) -1]));
 
 % Factorization period
 p0      = k;
-p       = 3*p0-4
+p       = 3*p0-3
 err0    = norm(eye(p0)-Z^p,'fro')
 
 % Periodic factorization
