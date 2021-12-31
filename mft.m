@@ -220,29 +220,34 @@ drawnow
 err     = norm(Ar-A,'fro')/norm(A,'fro')
 
 
-%% Side note, periodic factorizations
+%% Side note, periodic factorizations (naive implementation)
 
 % Select compression level
 k       = ceil(k0*1)
 
-F       = Qc(:,1:k);            B = F;
-H       = (Rc(1:k,:)*Pc')';     D = H;
+F       = Qc(:,1:k);        B = randn(m,k);
+H       = (Rc(1:k,:)*Pc')'; D = H;
 
+% Periodic matix
 Z       = diag(roots([1 zeros(1,k-1) -1])); 
 
 % Factorization period
 p0      = k;
-p       = 3*p0-12
+p       = 3*p0-3
+err0    = norm(eye(p0)-Z^p,'fro')
 
-Y       = (Z*pinv(F))';     
-X       = pinv(H')*Z;   
+% Periodic factorization
+[QY,RY] = qr(B'*F,0);           [QX,RX] = qr(H'*D,0);
+Y       = (Z*(RY\(QY'*B')))';   X       = ((D/RX)*QX')*Z;
 G       = real(Z^(p-1)*Y'*A*X*Z^(p-1));
 Ar      = F*G*H';
-
-err     = norm(Ar-A,'fro')/norm(A,'fro')
 
 clf 
 imagesc(Ar)
 axis equal off 
 drawnow
+
+err     = norm(Ar-A,'fro')/norm(A,'fro')
+
+
 
