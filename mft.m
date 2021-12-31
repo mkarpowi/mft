@@ -7,7 +7,10 @@ clear all
 N       = 5e2;
 A       = gallery('randsvd',[3*N,N],1e4);
 A       = gallery('cycol',[N,3*N],ceil(N/5));
-A       = double(rgb2gray(imread('picopico.jpeg')));
+
+A       = double(rgb2gray(imread('pico.jpeg')));
+% A       = double(rgb2gray(imread('picopico.jpeg')));
+
 
 [m,n]   = size(A)
 k0      = rank(A)
@@ -53,7 +56,7 @@ H       = (Rc(1:k,:)*Pc')';     D = H;
 [QX,RX] = qr(H'*D,0);      
 Y       = (RY\(QY'*B'))';   
 X       = (D/RX)*QX';
-G       = Y'*A*X
+G       = Y'*A*X;
 Ar      = F*G*H';
 
 clf 
@@ -223,7 +226,7 @@ err     = norm(Ar-A,'fro')/norm(A,'fro')
 %% Side note, periodic factorizations (naive implementation)
 
 % Select compression level
-k       = ceil(k0*1)
+k       = ceil(k0*0.1)
 
 F       = Qc(:,1:k);        B = randn(m,k);
 H       = (Rc(1:k,:)*Pc')'; D = H;
@@ -233,7 +236,7 @@ Z       = diag(roots([1 zeros(1,k-1) -1]));
 
 % Factorization period
 p0      = k;
-p       = 3*p0-3
+p       = 3*p0-4
 err0    = norm(eye(p0)-Z^p,'fro')
 
 % Periodic factorization
