@@ -218,3 +218,31 @@ axis equal off
 drawnow
 
 err     = norm(Ar-A,'fro')/norm(A,'fro')
+
+
+%% Side note, periodic factorizations
+
+% Select compression level
+k       = ceil(k0*1)
+
+F       = Qc(:,1:k);            B = F;
+H       = (Rc(1:k,:)*Pc')';     D = H;
+
+Z       = diag(roots([1 zeros(1,k-1) -1])); 
+
+% Factorization period
+p0      = k;
+p       = 3*p0-12
+
+Y       = (Z*pinv(F))';     
+X       = pinv(H')*Z;   
+G       = real(Z^(p-1)*Y'*A*X*Z^(p-1));
+Ar      = F*G*H';
+
+err     = norm(Ar-A,'fro')/norm(A,'fro')
+
+clf 
+imagesc(Ar)
+axis equal off 
+drawnow
+
