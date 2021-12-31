@@ -9,7 +9,7 @@ A       = gallery('randsvd',[3*N,N],1e4);
 A       = gallery('cycol',[N,3*N],ceil(N/5));
 
 A       = double(rgb2gray(imread('pico.jpeg')));
-% A       = double(rgb2gray(imread('picopico.jpeg')));
+A       = double(rgb2gray(imread('picopico.jpeg')));
 
 
 [m,n]   = size(A)
