@@ -1,25 +1,25 @@
-%% A theory of meta-factorization: numerical examples
+%% A theory of meta-factorization: examples
 %  M.P.Karpowicz
 
 clear all
 
 % Select test matrix
-N       = 5e2;
-A       = gallery('randsvd',[3*N,N],1e4);
-A       = gallery('cycol',[N,3*N],ceil(N/5));
-
-A       = double(rgb2gray(imread('pico.jpeg')));
+% N       = 1e2;
+% A       = gallery('randsvd',[3*N,N],1e4);
+% A       = gallery('cycol',[N,3*N],ceil(N/5));
+% A       = gallery('circul',randn(1,N));
+ 
+% A       = double(rgb2gray(imread('pico.jpeg')));
 A       = double(rgb2gray(imread('picopico.jpeg')));
 
 
 [m,n]   = size(A)
 k0      = rank(A)
 
-% Select compression level
-k       = ceil(k0*1)
 
 %% Generate basis for column-space and row-space
 
+% Orthogonal
 [Qc,Rc,Pc]  = qr(A);
 [Qr,Rr,Pr]  = qr(A');
 
@@ -30,6 +30,7 @@ k       = k0;
 
 F       = Qc(:,1:k);        B       = randn(m,k);
 H       = Qr(:,1:k);        D       = randn(n,k);
+
 [QY,RY] = qr(B'*F,0);       [QX,RX] = qr(H'*D,0);      
 Y       = (RY\(QY'*B'))';   X       = (D/RX)*QX';
 W       = randn(k,k);
@@ -48,10 +49,10 @@ err2    = norm(H'*X*H'-H','fro')
 %% CPQR and its mixing matrix
 
 % Select compression level
-k       = ceil(k0*.01)
+k       = ceil(k0*.1)
 
-F       = Qc(:,1:k);            B = F;
-H       = (Rc(1:k,:)*Pc')';     D = H;
+F       = Qc(:,1:k);        B = F;
+H       = (Rc(1:k,:)*Pc')'; D = H;
 [QY,RY] = qr(B'*F,0);      
 [QX,RX] = qr(H'*D,0);      
 Y       = (RY\(QY'*B'))';   
@@ -69,7 +70,7 @@ err     = norm(Ar-A,'fro')/norm(A,'fro')
 %% UTV 
 
 % Select compression level
-k       = ceil(k0*.01)
+k       = ceil(k0*1)
 
 H       = Qr(:,1:k);    D = H;
 [QX,RX] = qr(H'*D,0);      
@@ -160,7 +161,7 @@ err = norm(Ar-A,'fro')/norm(A,'fro')
 %% Generalized Nystrom factorization (by Nakatsukasa)
 
 % Select compression level
-k       = ceil(k0*.1)
+k       = ceil(k0*.01)
 
 D       = randn(n,k);   B  = randn(m,ceil(1.5*k)); % Oversampling
 F       = A*D;          H  = A'*B;
@@ -237,7 +238,7 @@ Z       = diag(roots([1 zeros(1,k-1) -1]));
 
 % Factorization period
 p0      = k;
-p       = 3*p0-3
+p       = 3*p0
 err0    = norm(eye(p0)-Z^p,'fro')
 
 % Periodic factorization
@@ -263,7 +264,7 @@ F       = Qc(:,1:k);        B = F;
 H       = Qr(:,1:k);        D = H;
 
 % Periodic mixing matrix
-lambda  = roots([1 zeros(1,k-1) -1]);
+lambda  = roots([1 zeros(1,k-1) -1]); 
 Z       = diag(lambda);
 [QY,RY] = qr(B'*F,0);           [QX,RX] = qr(H'*D,0);
 Y       = (Z*(RY\(QY'*B')))';   X       = ((D/RX)*QX')*Z;
@@ -287,7 +288,4 @@ end
 subplot(122)
 stairs(1:p,err)
 grid on
-
-
-
 
