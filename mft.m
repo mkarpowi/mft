@@ -4,12 +4,12 @@
 clear all
 
 % Select test matrix
-% N       = 1e2;
-% A       = gallery('randsvd',[3*N,N],1e4);
-% A       = gallery('cycol',[N,3*N],ceil(N/5));
-% A       = gallery('circul',randn(1,N));
+N       = 1e2;
+A       = gallery('randsvd',[3*N,N],1e4);
+A       = gallery('cycol',[N,3*N],ceil(N/5));
+A       = gallery('circul',randn(1,N));
  
-% A       = double(rgb2gray(imread('pico.jpeg')));
+A       = double(rgb2gray(imread('pico.jpeg')));
 A       = double(rgb2gray(imread('picopico.jpeg')));
 
 
